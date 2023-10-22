@@ -34,36 +34,54 @@ public class Censor {
 
     public void checkFile(String str){
 
+        int amount = 0;
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(str));
             int s;
             int start;
             StringBuffer stringBuffer = new StringBuffer();
             StringBuffer stringBuffer1 = new StringBuffer();
+            StringBuffer stringBuffer2 = new StringBuffer();
             while ((s=bufferedReader.read()) != -1) {
                 stringBuffer.append((char) s);
             }
             for (int i = 0; i < stringBuffer.length()-1; i++) {
                 start = i;
-                while (stringBuffer.charAt(i) != '.'&&stringBuffer.charAt(i) != '!'){
+                while (stringBuffer.charAt(i) != '.' && stringBuffer.charAt(i) != '!'
+                        && stringBuffer.charAt(i) != '?'){
                     if (i == stringBuffer.length())
                         break;
                     i++;
                 }
-                for (String x:censoredWords) {
-                    if (x == stringBuffer.substring(start, i).toLowerCase()) {
-                        System.out.println(stringBuffer.substring(start, i) + stringBuffer.charAt(i) + " ");
-                        //break;
+                stringBuffer1.append(stringBuffer.substring(start, i)+stringBuffer.charAt(i));
+                for (int j = 0; j < stringBuffer1.length()-1; j++) {
+                    int start1 = j;
+                    while (stringBuffer1.charAt(j) != '.' && stringBuffer1.charAt(j) != '!'
+                            && stringBuffer1.charAt(j) != '?' && stringBuffer1.charAt(j) != ' ') {
+                        if (i == stringBuffer1.length())
+                            break;
+                        j++;
                     }
+                    for (String x:censoredWords) {
+                        if (stringBuffer1.substring(start1, j).toLowerCase().equals(x)) {
+                            stringBuffer2.append(stringBuffer1+" ");
+                            amount++;
+                            System.out.println(stringBuffer1);
+                            break;
+                        }
                     }
+                    //j++;
+                }
+                stringBuffer1.delete(0,stringBuffer1.length());
                 i++;
             }
 
-
-            //BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("out3.txt"));
-            //bufferedWriter.write(stringBuffer1.substring(0));
-            //bufferedWriter.close();
-
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("out3.txt"));
+            bufferedWriter.write(stringBuffer2.substring(0));
+            bufferedWriter.close();
+            System.out.println(amount);
+            if (amount == 0)
+                System.out.println("Текст прошел цензуру");
 
         }
 
@@ -75,6 +93,7 @@ public class Censor {
         {
             System.out.println(ex.getMessage());
         }
+
 
 
     }

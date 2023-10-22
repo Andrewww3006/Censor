@@ -6,7 +6,7 @@ public class Main {
 	// write your code here
 
         FileCreator test;
-        test = new FileCreator("Привет! Как твои дела? Ты жопа. Ананас был кислый.","out.txt");
+        test = new FileCreator("Привет! Как твои дела, жопа? Ты попа. Ананас был хорош.","out.txt");
 
         FileCreator censor;
         censor = new FileCreator("Жопа\nАнанас\nНос","censor.txt");
